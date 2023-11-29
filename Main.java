@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -13,17 +15,18 @@ public class Main {
         String[] sca = input.split(" ");
         String op = sca[1];
         int res;
-        if (sca.length == 3){
+        List <String> roman = Arrays.asList("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X");
+        if (sca.length == 3) {
         } else {
             throw new Exception("т.к.формат математической операции не удовлетворяет заданию (два опаранда и один оператор)");
         }
-        if (sca[0].matches(Arrays.toString(roman)) && !sca[2].matches(Arrays.toString(roman)) || !sca[0].matches(Arrays.toString(roman)) && sca[2].matches(Arrays.toString(roman))) {
+        if (roman.contains(sca[0]) && !roman.contains(sca[2]) || !roman.contains(sca[0]) && roman.contains(sca[2])) {
             throw new Exception("Числа не принадлежат одной системе счисления");
         }
-        if (sca[0].matches(Arrays.toString(roman)) && sca[2].matches(Arrays.toString(roman))) {
+        if (roman.contains(sca[0]) && roman.contains(sca[2])) {
             int m = Roman(sca[0]);
             int n = Roman(sca[2]);
-            res = calculat(m, op, n);
+            res = calculator(m, op, n);
             if (res > 0) {
                 return arabToRoman(res);
             }
@@ -34,27 +37,28 @@ public class Main {
         if (a < 1 | a > 10 | b < 1 | b > 10) {
             throw new Exception("неправильный диапазон");
         }
-        res = calculat(a, op, b);
+        res = calculator(a, op, b);
         return Integer.toString(res);
     }
 
-    private static int calculat(int x, String op, int y) throws Exception {
-        return switch (op) {
+    private static int calculator(int x, String op, int y) throws Exception {
+        int res = switch (op) {
             case "+" -> x + y;
             case "-" -> x - y;
             case "*" -> x * y;
             case "/" -> x / y;
             default -> throw new Exception("неправильный оператор");
         };
-
+        return res;
     }
 
     static int Roman(String e) {
         String[] roman = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
-        return Arrays.asList(roman).indexOf(e) + 1;
+        int f = Arrays.asList(roman).indexOf(e);
+        int a = f + 1;
+        return a;
     }
 
-    static String[] roman = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
 
     static String arabToRoman(int a) {
         String[] roman = {"C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
